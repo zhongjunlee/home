@@ -1,0 +1,189 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: home-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+  redis:
+    image: redis:5.0.7
+    container_name: home-redis
+    restart: always
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:12-alpine
+    container_name: home-postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5432:5432
+    volumes:
+      - /root/PostgreSQL/data:/var/lib/postgresql/data
+  home-gateway:
+    image: home-gateway
+    container_name: home-gateway
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host # 以主机网络环境运行
+  home-system:
+    image: home-module-system-biz
+    container_name: home-system
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    healthcheck:
+      test: [ "CMD","curl","-f","http://localhost:48081" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: always
+    network_mode: host
+  home-infra:
+    image: home-module-infra-biz
+    container_name: home-infra
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host
+    healthcheck:
+      test: [ "CMD","curl","-f","http://localhost:48082" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    depends_on:
+      home-system:
+        condition: service_healthy
+  home-report:
+    image: home-module-report-biz
+    container_name: home-report
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host
+    depends_on:
+      home-infra:
+        condition: service_healthy
+  home-bpm:
+    image: home-module-bpm-biz
+    container_name: home-bpm
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host
+    depends_on:
+      home-infra:
+        condition: service_healthy
+  home-pay:
+    image: home-module-pay-biz
+    container_name: home-pay
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host
+    depends_on:
+      home-infra:
+        condition: service_healthy
+  home-mp:
+    image: home-module-mp-biz
+    container_name: home-mp
+    environment:
+      - TZ=Asia/Shanghai # 配置程序默认时区为上海（中国标准时间）
+      - JAVA_TOOL_OPTIONS=-javaagent:/data/skywalking/skywalking-agent/skywalking-agent.jar # 配置skywalking
+      - SW_AGENT_NAME=home-gateway
+      - SW_AGENT_TRACE_IGNORE_PATH=Redisson/PING,/actuator/**,/admin/**
+      - SW_AGENT_COLLECTOR_BACKEND_SERVICES=[YOUR_SKYWALKING_ADDR] # 请替换 your.skywalking.addr 为你的 skywalking 地址
+      - SPRING_PROFILES_ACTIVE=test # 指定程序运行环境
+      - SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR=[YOUR_NACOS_ADDR] # 配置中心地址
+      - SPRING_CLOUD_NACOS_CONFIG_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+      - SPRING_CLOUD_NACOS_SERVER_ADDR=[YOUR_NACOS_ADDR]  # 注册中心地址
+      - SPRING_CLOUD_NACOS_DISCOVERY_NAMESPACE=[YOUR_NAMESPACE] # 命名空间
+    volumes:
+      - /docker/home-cloud/logs:/root/logs/
+      - /data/skywalking/skywalking-agent:/data/skywalking/skywalking-agent
+    restart: always
+    network_mode: host
+    depends_on:
+      home-infra:
+        condition: service_healthy

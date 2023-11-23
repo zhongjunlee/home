@@ -1,0 +1,2 @@
+com.johnnylee.cloud.framework.env.config.YudaoEnvWebAutoConfiguration
+com.johnnylee.cloud.framework.env.config.YudaoEnvRpcAutoConfiguration

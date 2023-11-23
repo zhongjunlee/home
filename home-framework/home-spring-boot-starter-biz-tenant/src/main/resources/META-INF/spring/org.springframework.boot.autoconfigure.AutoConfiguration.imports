@@ -1,0 +1,3 @@
+com.johnnylee.cloud.framework.tenant.config.YudaoTenantRpcAutoConfiguration
+com.johnnylee.cloud.framework.tenant.config.YudaoTenantAutoConfiguration
+com.johnnylee.cloud.framework.tenant.config.YudaoTenantMQAutoConfiguration

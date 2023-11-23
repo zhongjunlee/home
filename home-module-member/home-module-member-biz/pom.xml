@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.johnnylee.cloud</groupId>
+        <artifactId>home-module-member</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>home-module-member-biz</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>
+        member 模块，我们放会员业务。
+        例如说：会员中心等等
+    </description>
+
+    <dependencies>
+        <!-- Spring Cloud 基础 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-env</artifactId>
+        </dependency>
+
+        <!-- 依赖服务 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-module-member-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-module-system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-module-infra-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 业务组件 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-biz-operatelog</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-biz-tenant</artifactId>
+        </dependency>
+
+        <!-- Web 相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- DB 相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-redis</artifactId>
+        </dependency>
+
+        <!-- RPC 远程调用相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-rpc</artifactId>
+        </dependency>
+
+        <!-- Registry 注册中心相关 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- Config 配置中心相关 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- 消息队列相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-mq</artifactId>
+        </dependency>
+
+        <!-- Test 测试相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 工具类相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-excel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-biz-ip</artifactId>
+        </dependency>
+
+        <!-- 监控相关 -->
+        <dependency>
+            <groupId>com.johnnylee.cloud</groupId>
+            <artifactId>home-spring-boot-starter-monitor</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

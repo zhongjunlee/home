@@ -1,0 +1,5 @@
+com.johnnylee.cloud.framework.apilog.config.YudaoApiLogAutoConfiguration
+com.johnnylee.cloud.framework.jackson.config.YudaoJacksonAutoConfiguration
+com.johnnylee.cloud.framework.swagger.config.YudaoSwaggerAutoConfiguration
+com.johnnylee.cloud.framework.web.config.YudaoWebAutoConfiguration
+com.johnnylee.cloud.framework.apilog.config.YudaoApiLogRpcAutoConfiguration

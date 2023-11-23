@@ -1,0 +1,2 @@
+com.johnnylee.cloud.framework.tracer.config.YudaoTracerAutoConfiguration
+com.johnnylee.cloud.framework.tracer.config.YudaoMetricsAutoConfiguration

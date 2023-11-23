@@ -1,0 +1,2 @@
+com.johnnylee.cloud.framework.redis.config.YudaoRedisAutoConfiguration
+com.johnnylee.cloud.framework.redis.config.YudaoCacheAutoConfiguration

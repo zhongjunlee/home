@@ -1,0 +1,2 @@
+com.johnnylee.cloud.framework.datasource.config.YudaoDataSourceAutoConfiguration
+com.johnnylee.cloud.framework.mybatis.config.YudaoMybatisAutoConfiguration

@@ -1,0 +1,2 @@
+com.johnnylee.cloud.framework.quartz.config.YudaoXxlJobAutoConfiguration
+com.johnnylee.cloud.framework.quartz.config.YudaoAsyncAutoConfiguration
